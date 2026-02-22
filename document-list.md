@@ -65,6 +65,100 @@ IT-001_FEAT-001_user-auth.md     ← 結合テスト仕様・結果書
 
 ---
 
+## ディレクトリ構成
+
+ドキュメントはフェーズ別フォルダに配置する。詳細設計（DSD）以降は、機能別サブフォルダ（`FEAT-{NNN}_{機能名}/`）とシステム共通サブフォルダ（`_common/`）に分けて管理する。
+
+```
+docs/
+├── REQ/
+│   ├── REQ-001_system-requirements.md
+│   ├── REQ-002_business-requirements.md
+│   ├── REQ-003_use-cases.md
+│   ├── REQ-004_screen-list.md
+│   ├── REQ-005_feature-list.md              # FEAT-NNN の定義元
+│   ├── REQ-006_non-functional-requirements.md
+│   ├── REQ-007_external-interfaces.md
+│   └── REQ-008_glossary.md
+├── BSD/
+│   ├── BSD-001_architecture.md
+│   ├── BSD-002_security-design.md
+│   ├── BSD-003_screen-design.md
+│   ├── BSD-004_business-flow.md
+│   ├── BSD-005_api-design.md
+│   ├── BSD-006_database-design.md
+│   ├── BSD-007_external-interface-design.md
+│   └── BSD-008_test-plan.md
+├── DSD/
+│   ├── _common/                             # システム共通
+│   │   └── DSD-007_coding-guidelines.md
+│   ├── FEAT-001_{機能名}/                    # 機能別（FEAT-NNN ごとに1フォルダ）
+│   │   ├── DSD-001_FEAT-001_{機能名}.md
+│   │   ├── DSD-002_FEAT-001_{機能名}.md
+│   │   ├── DSD-003_FEAT-001_{機能名}.md
+│   │   ├── DSD-004_FEAT-001_{機能名}.md
+│   │   ├── DSD-005_FEAT-001_{機能名}.md     # 外部IF使用時のみ
+│   │   ├── DSD-006_FEAT-001_{機能名}.md     # バッチ/非同期使用時のみ
+│   │   └── DSD-008_FEAT-001_{機能名}.md
+│   └── FEAT-002_{機能名}/
+│       └── ...
+├── IMP/
+│   ├── _common/                             # システム共通
+│   │   ├── IMP-003_environment-setup.md
+│   │   └── IMP-004_db-migration.md
+│   ├── FEAT-001_{機能名}/
+│   │   ├── IMP-001_FEAT-001_{機能名}.md
+│   │   └── IMP-002_FEAT-001_{機能名}.md
+│   └── FEAT-002_{機能名}/
+│       └── ...
+├── UT/
+│   ├── _common/                             # システム共通
+│   │   └── UT-003_defect-list.md
+│   ├── FEAT-001_{機能名}/
+│   │   ├── UT-001_FEAT-001_{機能名}.md
+│   │   └── UT-002_FEAT-001_{機能名}.md
+│   └── FEAT-002_{機能名}/
+│       └── ...
+├── IT/
+│   ├── _common/                             # システム共通
+│   │   ├── IT-002_api-integration-test.md
+│   │   └── IT-003_defect-list.md
+│   ├── FEAT-001_{機能名}/
+│   │   └── IT-001_FEAT-001_{機能名}.md
+│   └── FEAT-002_{機能名}/
+│       └── ...
+├── ST/
+│   ├── ST-001_system-test.md
+│   ├── ST-002_performance-test.md
+│   ├── ST-003_security-test.md
+│   └── ST-004_defect-list.md
+├── UAT/
+│   ├── UAT-001_acceptance-test.md
+│   ├── UAT-002_defect-list.md
+│   └── UAT-003_acceptance-report.md
+├── REL/
+│   ├── REL-001_release-plan.md
+│   ├── REL-002_release-procedure.md
+│   └── REL-003_release-report.md
+└── OPS/
+    ├── OPS-001_operations-manual.md
+    ├── OPS-002_incident-response.md
+    ├── OPS-003_change-management.md
+    └── OPS-004_backup-restore.md
+```
+
+### フォルダ命名規則
+
+| フォルダ | 命名形式 | 例 |
+|---|---|---|
+| フェーズフォルダ | `{フェーズプレフィックス}/` | `DSD/` |
+| 機能別サブフォルダ | `{FEAT-ID}_{機能名}/` | `FEAT-001_user-auth/` |
+| システム共通サブフォルダ | `_common/` | `_common/` |
+
+> `_common/` の先頭アンダースコアにより、ファイルシステム上で機能別フォルダより前に表示される。
+
+---
+
 ## フェーズ1: 要件定義 (REQ)
 
 ### ドキュメント一覧
