@@ -52,6 +52,7 @@
 
 ```
 # FEAT-001（例: ユーザー認証）のドキュメント群
+DSD-009_FEAT-001_user-auth.md    ← ドメインモデル詳細設計書（DDD戦術設計・最初に生成）
 DSD-001_FEAT-001_user-auth.md    ← バックエンド機能詳細設計書
 DSD-002_FEAT-001_user-auth.md    ← フロントエンド詳細設計書
 DSD-003_FEAT-001_user-auth.md    ← API詳細設計書
@@ -85,8 +86,8 @@ IT-001_FEAT-001_user-auth.md     ← 結合テスト仕様・結果書
 | フェーズ | 対象ドキュメント | 性質 |
 |---|---|---|
 | REQ | REQ-005〜REQ-008 | システム全体の機能一覧・要件・用語の正本 |
-| BSD | BSD-001〜BSD-007 | 現行アーキテクチャ・設計方針の正本 |
-| DSD | DSD-001〜DSD-008（機能別） + DSD-007 | 機能ごとの詳細仕様の正本 |
+| BSD | BSD-001〜BSD-010 | 現行アーキテクチャ・設計方針の正本 |
+| DSD | DSD-001〜DSD-009（機能別） + DSD-007 | 機能ごとの詳細仕様の正本 |
 | OPS | OPS-001〜OPS-004 | 現行運用手順の正本 |
 
 ### projects/ に置くプロジェクト固有ドキュメント
@@ -117,7 +118,9 @@ docs/                                          # マスタドキュメント（�
 │   ├── BSD-004_business-flow.md
 │   ├── BSD-005_api-design.md
 │   ├── BSD-006_database-design.md
-│   └── BSD-007_external-interface-design.md
+│   ├── BSD-007_external-interface-design.md
+│   ├── BSD-009_domain-model.md
+│   └── BSD-010_data-architecture.md
 ├── DSD/
 │   ├── _common/
 │   │   └── DSD-007_coding-guidelines.md
@@ -253,7 +256,7 @@ projects/                                      # プロジェクト固有ドキ�
 ## フェーズ2: 基本設計 (BSD)
 
 > **配置先の考え方**
-> - BSD-001〜BSD-007（アーキテクチャ・設計方針）はマスタドキュメントとして `docs/BSD/` に配置する。プロジェクトで変更する場合は `docs/BSD/` を直接編集し、git コミットで変更を記録する。
+> - BSD-001〜BSD-010（アーキテクチャ・設計方針）はマスタドキュメントとして `docs/BSD/` に配置する。プロジェクトで変更する場合は `docs/BSD/` を直接編集し、git コミットで変更を記録する。
 > - BSD-008（テスト計画）はプロジェクト固有のため `projects/PRJ-{NNN}/BSD/` に配置する。
 
 ### ドキュメント一覧
@@ -268,6 +271,8 @@ projects/                                      # プロジェクト固有ドキ�
 | BSD-006 | データベース基本設計書 | `BSD-006_database-design.md` | ER図・主要テーブル定義・データモデル方針 | REQ-005, REQ-007 | DSD-004_{FEAT-ID} |
 | BSD-007 | 外部インターフェース基本設計書 | `BSD-007_external-interface-design.md` | 外部システム連携方式・データフォーマット・通信プロトコル | REQ-007 | DSD-005_{FEAT-ID} |
 | BSD-008 | テスト計画書（基本） | `BSD-008_test-plan.md` | テスト方針・テストフェーズ構成・品質基準・環境計画。TDD方針（単体テストはIMP統合）を記載する | REQ-006 | IMP-001_{FEAT-ID}, IT-001_{FEAT-ID}, ST-001, UAT-001 |
+| BSD-009 | ドメインモデル設計書（DDD 戦略設計） | `BSD-009_domain-model.md` | ユビキタス言語辞書・境界づけられたコンテキストマップ・コンテキスト定義・統合パターン・サブドメイン分類 | REQ-002, REQ-003, REQ-005, REQ-008 | BSD-010, DSD-009_{FEAT-ID}, DSD-001_{FEAT-ID}, DSD-004_{FEAT-ID}, DSD-007 |
+| BSD-010 | データアーキテクチャ設計書 | `BSD-010_data-architecture.md` | データ戦略・概念データモデル・データフロー・ライフサイクル管理・分析基盤・データ品質ガバナンス | REQ-005, REQ-006, REQ-007, BSD-006, BSD-009 | DSD-004_{FEAT-ID}, DSD-009_{FEAT-ID}, DSD-006_{FEAT-ID}, IMP-004, OPS-004 |
 
 ### 成果物チェックリスト
 - [ ] BSD-001 システムアーキテクチャ設計書
@@ -278,6 +283,8 @@ projects/                                      # プロジェクト固有ドキ�
 - [ ] BSD-006 データベース基本設計書
 - [ ] BSD-007 外部インターフェース基本設計書
 - [ ] BSD-008 テスト計画書（基本）
+- [ ] BSD-009 ドメインモデル設計書（DDD 戦略設計）
+- [ ] BSD-010 データアーキテクチャ設計書
 
 ---
 
@@ -298,7 +305,8 @@ projects/                                      # プロジェクト固有ドキ�
 | DSD-005_{FEAT-ID} | 外部インターフェース詳細設計書 | `DSD-005_{FEAT-ID}_{機能名}.md` | 機能別（外部IF使用時のみ） | 外部API呼び出し仕様・リトライ/タイムアウト・エラー処理詳細 | BSD-007, REQ-005 | IMP-001_{FEAT-ID}, IT-001_{FEAT-ID} |
 | DSD-006_{FEAT-ID} | バッチ・非同期処理詳細設計書 | `DSD-006_{FEAT-ID}_{機能名}.md` | 機能別（バッチ/非同期使用時のみ） | バッチ処理・キュー・非同期ジョブの仕様（スケジュール・処理順序・冪等性） | BSD-001, BSD-004, REQ-005 | IMP-001_{FEAT-ID} |
 | DSD-007 | コーディング規約・開発ガイドライン | `DSD-007_coding-guidelines.md` | システム共通 | 言語別コーディング規約・フォルダ構成・命名規則・レビュー基準 | BSD-001 | IMP-001_{FEAT-ID}, IMP-002_{FEAT-ID} |
-| DSD-008_{FEAT-ID} | 単体テスト設計書（TDD起点） | `DSD-008_{FEAT-ID}_{機能名}.md` | 機能別 | TDDの起点となるテストケース設計書。テスト対象関数/コンポーネント・テストケース・モック方針を定義し、実装フェーズのRed-Green-Refactorを駆動する | DSD-001_{FEAT-ID}, DSD-002_{FEAT-ID}, DSD-003_{FEAT-ID} | IMP-001_{FEAT-ID}, IMP-002_{FEAT-ID} |
+| DSD-008_{FEAT-ID} | 単体テスト設計書（TDD起点） | `DSD-008_{FEAT-ID}_{機能名}.md` | 機能別 | TDDの起点となるテストケース設計書。テスト対象関数/コンポーネント・テストケース・モック方針を定義し、実装フェーズのRed-Green-Refactorを駆動する | DSD-001_{FEAT-ID}, DSD-002_{FEAT-ID}, DSD-003_{FEAT-ID}, DSD-009_{FEAT-ID} | IMP-001_{FEAT-ID}, IMP-002_{FEAT-ID} |
+| DSD-009_{FEAT-ID} | ドメインモデル詳細設計書（DDD 戦術設計） | `DSD-009_{FEAT-ID}_{機能名}.md` | 機能別 | コンテキスト配置・集約設計・エンティティ・値オブジェクト・ドメインサービス・リポジトリIF・ドメインイベント・腐敗防止層の詳細定義 | BSD-009, BSD-010, REQ-005 | DSD-001_{FEAT-ID}, DSD-004_{FEAT-ID}, DSD-008_{FEAT-ID}, IMP-001_{FEAT-ID} |
 
 ### 成果物チェックリスト
 - [ ] DSD-001_{FEAT-ID} バックエンド機能詳細設計書（機能ごとに作成）
@@ -309,6 +317,7 @@ projects/                                      # プロジェクト固有ドキ�
 - [ ] DSD-006_{FEAT-ID} バッチ・非同期処理詳細設計書（該当機能のみ）
 - [ ] DSD-007 コーディング規約・開発ガイドライン
 - [ ] DSD-008_{FEAT-ID} 単体テスト設計書（機能ごとに作成）
+- [ ] DSD-009_{FEAT-ID} ドメインモデル詳細設計書（機能ごとに作成）
 
 ---
 

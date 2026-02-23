@@ -36,9 +36,13 @@ BSD・REQ の成果物を Read で読み込む:
 | BSD-006 | `docs/BSD/BSD-006_database-design.md` | DSD-004 の入力 |
 | BSD-007 | `docs/BSD/BSD-007_external-interface-design.md` | DSD-005 の入力 |
 | REQ-005 | `docs/REQ/REQ-005_feature-list.md` | 全 DSD の入力（対象機能の確認） |
+| BSD-009 | `docs/BSD/BSD-009_domain-model.md` | DSD-009, DSD-001 の入力 |
+| BSD-010 | `docs/BSD/BSD-010_data-architecture.md` | DSD-009, DSD-004 の入力 |
 | REQ-008 | `docs/REQ/REQ-008_glossary.md` | 用語統一（存在する場合） |
 
-**重要**: DSD-008（単体テスト設計書）の入力元は BSD ではなく **同機能の DSD-001〜DSD-003**。DSD-001〜003 を先に作成してから DSD-008 を生成する。
+**重要**:
+- DSD-009（ドメインモデル詳細設計書）は DSD-001, DSD-004, DSD-008 の入力元となるため、最初に生成する。
+- DSD-008（単体テスト設計書）の入力元は BSD ではなく **同機能の DSD-001〜DSD-003 および DSD-009**。DSD-009 → DSD-001〜003 を先に作成してから DSD-008 を生成する。
 
 ### Step 3: ワークフロー実行
 
@@ -56,6 +60,11 @@ SKILL.md のワークフロー（Step 1〜5）に従い、DSD-001 → DSD-008 �
 | DSD-006 | `skills/detailed-design-doc/references/dsd-006-batch.md` |
 | DSD-007 | `skills/detailed-design-doc/references/dsd-007-coding-guidelines.md` |
 | DSD-008 | `skills/detailed-design-doc/references/dsd-008-unit-test.md` |
+| DSD-009 | `skills/detailed-design-doc/references/dsd-009-domain-model.md` |
+
+**生成順序**: `DSD-009 → DSD-001 → DSD-002 → DSD-003 → DSD-004 → DSD-005 → DSD-006 → DSD-007 → DSD-008`
+
+> DSD-009 のドメインモデルが DSD-001（バックエンド）、DSD-004（DB）、DSD-008（テスト）の前提となるため、最初に生成する。
 
 DSD-005（外部IF）・DSD-006（バッチ）は該当機能でのみ作成する。
 
@@ -71,6 +80,7 @@ DSD-005（外部IF）・DSD-006（バッチ）は該当機能でのみ作成す�
 | DSD-006 バッチ処理詳細設計書（該当時のみ） | `docs/DSD/{{FEAT_ID}}_{{FEAT_NAME}}/DSD-006_{{FEAT_ID}}_{{FEAT_NAME}}.md` |
 | DSD-007 コーディング規約（システム共通・初回のみ） | `docs/DSD/_common/DSD-007_coding-guidelines.md` |
 | DSD-008 単体テスト設計書 | `docs/DSD/{{FEAT_ID}}_{{FEAT_NAME}}/DSD-008_{{FEAT_ID}}_{{FEAT_NAME}}.md` |
+| DSD-009 ドメインモデル詳細設計書 | `docs/DSD/{{FEAT_ID}}_{{FEAT_NAME}}/DSD-009_{{FEAT_ID}}_{{FEAT_NAME}}.md` |
 
 保存先ディレクトリが存在しない場合は `mkdir -p` で作成してから保存する。
 

@@ -10,14 +10,15 @@ description: |
 
 | ドキュメントID | ドキュメント名 | 作成単位 | 入力元 | 保存先 |
 |---|---|---|---|---|
-| DSD-001_{FEAT-ID} | バックエンド機能詳細設計書 | 機能別 | BSD-001, BSD-002, BSD-004, REQ-005 | `docs/DSD/FEAT-{NNN}_{機能名}/DSD-001_{FEAT-ID}_{機能名}.md` |
+| DSD-001_{FEAT-ID} | バックエンド機能詳細設計書 | 機能別 | BSD-001, BSD-002, BSD-004, BSD-009, DSD-009_{FEAT-ID}, REQ-005 | `docs/DSD/FEAT-{NNN}_{機能名}/DSD-001_{FEAT-ID}_{機能名}.md` |
 | DSD-002_{FEAT-ID} | フロントエンド詳細設計書 | 機能別 | BSD-003, BSD-004, REQ-005 | `docs/DSD/FEAT-{NNN}_{機能名}/DSD-002_{FEAT-ID}_{機能名}.md` |
 | DSD-003_{FEAT-ID} | API詳細設計書 | 機能別 | BSD-005, REQ-005 | `docs/DSD/FEAT-{NNN}_{機能名}/DSD-003_{FEAT-ID}_{機能名}.md` |
-| DSD-004_{FEAT-ID} | データベース詳細設計書 | 機能別 | BSD-006, REQ-005 | `docs/DSD/FEAT-{NNN}_{機能名}/DSD-004_{FEAT-ID}_{機能名}.md` |
+| DSD-004_{FEAT-ID} | データベース詳細設計書 | 機能別 | BSD-006, BSD-010, DSD-009_{FEAT-ID}, REQ-005 | `docs/DSD/FEAT-{NNN}_{機能名}/DSD-004_{FEAT-ID}_{機能名}.md` |
 | DSD-005_{FEAT-ID} | 外部インターフェース詳細設計書 | 機能別（外部IF使用時のみ） | BSD-007, REQ-005 | `docs/DSD/FEAT-{NNN}_{機能名}/DSD-005_{FEAT-ID}_{機能名}.md` |
 | DSD-006_{FEAT-ID} | バッチ・非同期処理詳細設計書 | 機能別（バッチ/非同期使用時のみ） | BSD-001, BSD-004, REQ-005 | `docs/DSD/FEAT-{NNN}_{機能名}/DSD-006_{FEAT-ID}_{機能名}.md` |
 | DSD-007 | コーディング規約・開発ガイドライン | システム共通（1ファイルのみ） | BSD-001 | `docs/DSD/_common/DSD-007_coding-guidelines.md` |
-| DSD-008_{FEAT-ID} | 単体テスト設計書 | 機能別 | DSD-001_{FEAT-ID}, DSD-002_{FEAT-ID}, DSD-003_{FEAT-ID} | `docs/DSD/FEAT-{NNN}_{機能名}/DSD-008_{FEAT-ID}_{機能名}.md` |
+| DSD-008_{FEAT-ID} | 単体テスト設計書 | 機能別 | DSD-001_{FEAT-ID}, DSD-002_{FEAT-ID}, DSD-003_{FEAT-ID}, DSD-009_{FEAT-ID} | `docs/DSD/FEAT-{NNN}_{機能名}/DSD-008_{FEAT-ID}_{機能名}.md` |
+| DSD-009_{FEAT-ID} | ドメインモデル詳細設計書（DDD 戦術設計） | 機能別 | BSD-009, BSD-010, REQ-005 | `docs/DSD/FEAT-{NNN}_{機能名}/DSD-009_{FEAT-ID}_{機能名}.md` |
 
 ## 入力ドキュメントのパス
 
@@ -31,6 +32,8 @@ description: |
 | BSD-005 | `docs/BSD/BSD-005_api-design.md` |
 | BSD-006 | `docs/BSD/BSD-006_database-design.md` |
 | BSD-007 | `docs/BSD/BSD-007_external-interface-design.md` |
+| BSD-009 | `docs/BSD/BSD-009_domain-model.md` |
+| BSD-010 | `docs/BSD/BSD-010_data-architecture.md` |
 
 ### REQドキュメント（docs/REQ/）
 | ドキュメントID | パス |
@@ -51,7 +54,11 @@ description: |
 
 ユーザーのリクエストから以下を特定する:
 - **FEAT-ID**: どの機能（FEAT-NNN）か。未指定なら REQ-005 を読んで確認する
-- **DSDドキュメント種別**: どの DSD（DSD-001〜DSD-008）か。「全部」の場合は DSD-001→DSD-008 の順で処理
+- **DSDドキュメント種別**: どの DSD（DSD-001〜DSD-009）か。「全部」の場合は以下の生成順序で処理
+
+**生成順序**: `DSD-009 → DSD-001 → DSD-002 → DSD-003 → DSD-004 → DSD-005 → DSD-006 → DSD-007 → DSD-008`
+
+> DSD-009 のドメインモデルが DSD-001（バックエンド）、DSD-004（DB）、DSD-008（テスト）の前提となるため、最初に生成する。
 
 DSD-007（コーディング規約）はFEAT-IDを持たないシステム共通ドキュメント。
 
@@ -75,6 +82,7 @@ DSD-007（コーディング規約）はFEAT-IDを持たないシステム共通
 | DSD-006 | `references/dsd-006-batch.md` |
 | DSD-007 | `references/dsd-007-coding-guidelines.md` |
 | DSD-008 | `references/dsd-008-unit-test.md` |
+| DSD-009 | `references/dsd-009-domain-model.md` |
 
 ### Step 4: ドキュメント生成
 

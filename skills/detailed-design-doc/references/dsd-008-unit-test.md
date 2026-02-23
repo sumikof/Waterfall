@@ -105,6 +105,92 @@ describe('FeatureService', () => {
 
 （クラス数分繰り返す）
 
+### 2.5 ドメイン層テスト設計
+
+> DSD-009_{FEAT-ID}（ドメインモデル詳細設計書）で定義されたドメインオブジェクトの単体テストを設計する。
+> ドメイン層のテストは外部依存なし（モック不要）で実行できることを原則とする。
+
+#### 2.5.1 集約不変条件テスト
+
+| TC-ID | 集約名 | テストシナリオ | 分類 | 期待結果 |
+|---|---|---|---|---|
+| TC-AGG-001 | {AggregateName} | 正常な値で集約を生成 | 正常系 | 集約が正しく生成される |
+| TC-AGG-002 | {AggregateName} | 不変条件に違反する値で集約を生成 | 異常系 | ドメイン例外がスローされる |
+| TC-AGG-003 | {AggregateName} | 不変条件に違反する状態遷移を実行 | 異常系 | ドメイン例外がスローされる |
+| TC-AGG-004 | {AggregateName} | 正常な状態遷移を実行 | 正常系 | 状態が正しく遷移する |
+
+#### 2.5.2 値オブジェクトテスト
+
+| TC-ID | 値オブジェクト名 | テストシナリオ | 分類 | 期待結果 |
+|---|---|---|---|---|
+| TC-VO-001 | {VOName} | 有効な値で生成 | 正常系 | 値オブジェクトが正しく生成される |
+| TC-VO-002 | {VOName} | 無効な値で生成 | 異常系 | バリデーションエラーがスローされる |
+| TC-VO-003 | {VOName} | 同値の値オブジェクトの等価性 | 正常系 | 等価と判定される |
+| TC-VO-004 | {VOName} | 異なる値の値オブジェクトの等価性 | 正常系 | 非等価と判定される |
+| TC-VO-005 | {VOName} | 境界値での生成 | 境界値 | 境界値に応じた結果が得られる |
+
+#### 2.5.3 ドメインサービステスト
+
+| TC-ID | サービス名 | テストシナリオ | 分類 | 期待結果 |
+|---|---|---|---|---|
+| TC-DS-001 | {ServiceName} | 正常なパラメータで実行 | 正常系 | 期待する結果が返される |
+| TC-DS-002 | {ServiceName} | ビジネスルール違反のパラメータで実行 | 異常系 | ドメイン例外がスローされる |
+
+#### 2.5.4 ドメインイベントテスト
+
+| TC-ID | イベント名 | テストシナリオ | 分類 | 期待結果 |
+|---|---|---|---|---|
+| TC-EVT-001 | {EventName} | 集約操作後にイベントが発行される | 正常系 | 正しいイベントが発行される |
+| TC-EVT-002 | {EventName} | イベントのペイロードが正しい | 正常系 | ペイロードの各フィールドが期待値と一致する |
+
+#### テストコード概要例（ドメインオブジェクト単体テスト）
+
+```typescript
+describe('OrderAggregate', () => {
+  describe('create', () => {
+    it('TC-AGG-001: 正常な値で注文集約を生成できる', () => {
+      const order = Order.create({
+        customerId: CustomerId.create('customer-1'),
+        items: [OrderItem.create({ productId: 'prod-1', quantity: Quantity.create(2) })],
+      });
+
+      expect(order.id).toBeDefined();
+      expect(order.status).toBe('created');
+      expect(order.domainEvents).toContainEqual(
+        expect.objectContaining({ type: 'OrderCreated' })
+      );
+    });
+
+    it('TC-AGG-002: 商品なしで注文を生成するとエラー', () => {
+      expect(() =>
+        Order.create({
+          customerId: CustomerId.create('customer-1'),
+          items: [],
+        })
+      ).toThrow(DomainException);
+    });
+  });
+});
+
+describe('Money ValueObject', () => {
+  it('TC-VO-001: 有効な金額で生成できる', () => {
+    const money = Money.create(1000, 'JPY');
+    expect(money.amount).toBe(1000);
+    expect(money.currency).toBe('JPY');
+  });
+
+  it('TC-VO-002: 負の金額で生成するとエラー', () => {
+    expect(() => Money.create(-1, 'JPY')).toThrow();
+  });
+
+  it('TC-VO-003: 同値の Money は等価', () => {
+    const a = Money.create(1000, 'JPY');
+    const b = Money.create(1000, 'JPY');
+    expect(a.equals(b)).toBe(true);
+  });
+});
+```
+
 ---
 
 ## 3. フロントエンド単体テスト設計

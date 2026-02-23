@@ -9,8 +9,8 @@ Web システム向けのウォーターフォール + スペック駆動開発�
 | # | フェーズ | スキルディレクトリ | 主な成果物 |
 |---|---|---|---|
 | 1 | **REQ** 要件定義 | `skills/requirements-definition/` | REQ-001〜REQ-008 |
-| 2 | **BSD** 基本設計 | `skills/basic-design-doc/` | BSD-001〜BSD-008 |
-| 3 | **DSD** 詳細設計 | `skills/detailed-design-doc/` | DSD-001〜DSD-008（FEAT 単位） |
+| 2 | **BSD** 基本設計 | `skills/basic-design-doc/` | BSD-001〜BSD-010 |
+| 3 | **DSD** 詳細設計 | `skills/detailed-design-doc/` | DSD-001〜DSD-009（FEAT 単位） |
 | 4 | **IMP** 実装（TDD） | `skills/implementation/` | IMP-001〜IMP-005 + ソースコード |
 | 5 | **IT** 結合テスト | `skills/integration-test/` | IT-001〜IT-003 |
 | 6 | **ST** システムテスト | `skills/system-test/` | ST-001〜ST-004 |
@@ -69,7 +69,7 @@ Web システム向けのウォーターフォール + スペック駆動開発�
 
 | ディレクトリ | 役割 | 内容 |
 |---|---|---|
-| `docs/` | マスタドキュメント（システム仕様の正本） | REQ-005〜008、BSD-001〜007、DSD 全体、OPS |
+| `docs/` | マスタドキュメント（システム仕様の正本） | REQ-005〜008、BSD-001〜010、DSD 全体、OPS |
 | `projects/PRJ-{NNN}_{名称}/` | プロジェクト固有ドキュメント | REQ-001〜004、BSD-008、IMP、IT、ST、UAT、REL |
 
 詳細なディレクトリ構成・ファイル命名規則・ドキュメント ID 体系は `document-list.md` を正とする。

@@ -46,6 +46,12 @@ SKILL.md のワークフロー（Step 1〜5）に従い、BSD-001 → BSD-008 �
 | BSD-006 | `skills/basic-design-doc/references/bsd-006-database-design.md` |
 | BSD-007 | `skills/basic-design-doc/references/bsd-007-external-interface.md` |
 | BSD-008 | `skills/basic-design-doc/references/bsd-008-test-plan.md` |
+| BSD-009 | `skills/basic-design-doc/references/bsd-009-domain-model.md` |
+| BSD-010 | `skills/basic-design-doc/references/bsd-010-data-architecture.md` |
+
+**生成順序**: `BSD-001 → BSD-002 → BSD-003 → BSD-004 → BSD-009 → BSD-005 → BSD-006 → BSD-010 → BSD-007 → BSD-008`
+
+> BSD-009 は BSD-004 の業務フロー情報が必要。BSD-010 は BSD-006 のテーブル構造と BSD-009 のコンテキスト定義が必要。
 
 ### Step 4: 成果物の保存
 
@@ -59,6 +65,8 @@ SKILL.md のワークフロー（Step 1〜5）に従い、BSD-001 → BSD-008 �
 | BSD-006 データベース基本設計書 | `docs/BSD/BSD-006_database-design.md` |
 | BSD-007 外部インターフェース基本設計書 | `docs/BSD/BSD-007_external-interface-design.md` |
 | BSD-008 テスト計画書 | `projects/{{PROJECT_ID}}_{{PROJECT_NAME}}/BSD/BSD-008_test-plan.md` |
+| BSD-009 ドメインモデル設計書 | `docs/BSD/BSD-009_domain-model.md` |
+| BSD-010 データアーキテクチャ設計書 | `docs/BSD/BSD-010_data-architecture.md` |
 
 保存先ディレクトリが存在しない場合は `mkdir -p` で作成してから保存する。
 

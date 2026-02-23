@@ -20,23 +20,44 @@
 （BSD-001 の技術スタック・フォルダ構成から、この機能に関わるファイルパスを列挙）
 
 ```
-src/
-├── {domain}/
-│   ├── {feature}/
-│   │   ├── {feature}.controller.ts   # HTTPリクエスト受付
-│   │   ├── {feature}.service.ts      # ビジネスロジック
-│   │   ├── {feature}.repository.ts   # DB アクセス
-│   │   ├── {feature}.dto.ts          # リクエスト/レスポンス型定義
-│   │   └── {feature}.entity.ts       # DBエンティティ
+src/{bounded-context}/
+├── domain/           # ドメイン層（純粋なビジネスロジック）
+│   ├── entities/
+│   ├── value-objects/
+│   ├── aggregates/
+│   ├── domain-services/
+│   ├── domain-events/
+│   └── repositories/  # インターフェースのみ
+├── application/       # アプリケーション層（ユースケース）
+│   ├── commands/
+│   ├── queries/
+│   └── handlers/
+├── infrastructure/    # インフラ層（実装）
+│   ├── persistence/
+│   ├── external/
+│   └── messaging/
+└── presentation/      # プレゼンテーション層
+    ├── controllers/
+    └── mappers/
 ```
 
 ### 1.2 責務分担
 
-| ファイル | 責務 |
-|---|---|
-| `*.controller` | ルーティング・リクエスト受付・レスポンス返却 |
-| `*.service` | ビジネスロジック・トランザクション制御 |
-| `*.repository` | DB操作（CRUD）の抽象化 |
+| レイヤー | ディレクトリ | 責務 | 依存方向 |
+|---|---|---|---|
+| プレゼンテーション層 | `presentation/` | HTTP リクエスト受付・レスポンス返却・DTO マッピング | → アプリケーション層 |
+| アプリケーション層 | `application/` | ユースケース実行・コマンド/クエリハンドリング・トランザクション制御 | → ドメイン層 |
+| ドメイン層 | `domain/` | エンティティ・値オブジェクト・集約・ドメインサービス・ドメインイベント・リポジトリインターフェース | 依存なし（最内層） |
+| インフラストラクチャ層 | `infrastructure/` | リポジトリ実装・ORM エンティティ・外部 API クライアント・メッセージング | → ドメイン層（インターフェース実装） |
+
+> ドメイン層は外部ライブラリ・フレームワーク・DB への依存を持たない純粋なビジネスロジックとする。
+
+---
+
+## 2.0 ドメインオブジェクト参照
+
+> ドメイン層のオブジェクト（エンティティ・値オブジェクト・集約・ドメインサービス・ドメインイベント）の定義は **DSD-009_{FEAT-ID}（ドメインモデル詳細設計書）** を参照する。
+> 本ドキュメント（DSD-001）では、DSD-009 で定義されたドメインモデルを前提として、**アプリケーション層**（コマンド/クエリハンドラ・アプリケーションサービス）および **インフラストラクチャ層**（リポジトリ実装・外部連携）のクラス設計に注力する。
 
 ---
 
@@ -71,22 +92,27 @@ async methodName(param: ParamType): Promise<ReturnType> {
 
 ```mermaid
 sequenceDiagram
-  participant Controller
-  participant Service
-  participant Repository
+  participant Controller as Presentation::Controller
+  participant Handler as Application::CommandHandler
+  participant Domain as Domain::Aggregate
+  participant DomainService as Domain::DomainService
+  participant Repo as Infrastructure::Repository
   participant DB
+  participant EventBus as Infrastructure::EventBus
 
-  Controller->>Service: methodName(dto)
-  Service->>Service: validate(dto)
-  Service->>Repository: findById(id)
-  Repository->>DB: SELECT ...
-  DB-->>Repository: entity
-  Repository-->>Service: entity
-  Service->>Repository: save(entity)
-  Repository->>DB: INSERT/UPDATE
-  DB-->>Repository: result
-  Repository-->>Service: savedEntity
-  Service-->>Controller: responseDto
+  Controller->>Handler: execute(command)
+  Handler->>Repo: findById(id)
+  Repo->>DB: SELECT ...
+  DB-->>Repo: record
+  Repo-->>Handler: aggregate
+  Handler->>Domain: businessMethod(params)
+  Domain->>Domain: validate invariants
+  Note over Domain: <<DomainEvent>> EventName raised
+  Handler->>Repo: save(aggregate)
+  Repo->>DB: INSERT/UPDATE
+  DB-->>Repo: result
+  Handler->>EventBus: publish(domainEvents)
+  Handler-->>Controller: responseDto
 ```
 
 ---
@@ -145,6 +171,6 @@ sequenceDiagram
 | 影響先 | 内容 |
 |---|---|
 | IMP-001_{FEAT-ID} | 本設計に基づく実装 |
-| UT-001_{FEAT-ID} | テスト対象クラス・メソッドの網羅 |
+| DSD-009_{FEAT-ID} | ドメインモデル詳細設計（ドメイン層の定義元として参照関係） |
 | DSD-008_{FEAT-ID} | 単体テスト設計の入力 |
 ```

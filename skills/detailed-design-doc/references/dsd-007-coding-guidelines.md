@@ -80,6 +80,42 @@ src/
 └── database/          # マイグレーション・シード
 ```
 
+### 2.3.5 DDD 実装規約
+
+#### レイヤー依存ルール
+
+| ルール | 説明 |
+|---|---|
+| ドメイン層は外部依存ゼロ | ドメイン層のコードはフレームワーク・ORM・DB ドライバ・HTTP ライブラリ等に一切依存しない |
+| 依存の方向は内側へ | プレゼンテーション → アプリケーション → ドメイン ← インフラストラクチャ（インフラはドメインのインターフェースを実装） |
+| リポジトリインターフェースはドメイン層 | インターフェース定義は `domain/repositories/` に配置し、実装は `infrastructure/persistence/` に配置する |
+
+#### DDD 命名規約
+
+| DDD パターン | クラス名サフィックス | 配置ディレクトリ | 例 |
+|---|---|---|---|
+| 集約ルート | なし（エンティティ名そのまま） | `domain/aggregates/` | `Order` |
+| エンティティ | なし | `domain/entities/` | `OrderItem` |
+| 値オブジェクト | なし | `domain/value-objects/` | `Money`, `Email`, `Address` |
+| ドメインサービス | `Service` | `domain/domain-services/` | `PricingService` |
+| ドメインイベント | `Event` | `domain/domain-events/` | `OrderPlacedEvent` |
+| リポジトリインターフェース | `Repository` | `domain/repositories/` | `OrderRepository` |
+| リポジトリ実装 | `RepositoryImpl` | `infrastructure/persistence/` | `OrderRepositoryImpl` |
+| コマンド | `Command` | `application/commands/` | `PlaceOrderCommand` |
+| クエリ | `Query` | `application/queries/` | `GetOrderQuery` |
+| コマンドハンドラ | `Handler` | `application/handlers/` | `PlaceOrderHandler` |
+
+#### アンチパターン一覧
+
+| アンチパターン | 説明 | 正しいアプローチ |
+|---|---|---|
+| 貧血ドメインモデル | エンティティが getter/setter のみでビジネスロジックを持たない | ビジネスロジックをエンティティ・値オブジェクト内に実装する |
+| コンテキスト間の直接参照 | 異なるコンテキストのエンティティを直接 import する | ID 参照（値オブジェクト）またはドメインイベント経由で連携する |
+| ドメイン層からの DB 直接アクセス | ドメイン層のコードが SQL/ORM を直接実行する | リポジトリインターフェースを通じてアクセスする |
+| ドメインイベントの同期処理依存 | ドメインイベントの購読側が即時応答を前提とする | 結果整合性を前提とした非同期処理を基本とする |
+| 集約間のトランザクション結合 | 1つのトランザクションで複数の集約を更新する | 1トランザクション=1集約を原則とし、Saga パターンで整合性を確保する |
+| 値オブジェクトの可変性 | 値オブジェクトのプロパティを変更可能にする | 値オブジェクトは不変（immutable）とし、変更時は新しいインスタンスを生成する |
+
 ### 2.4 エラーハンドリング規約
 - カスタム例外クラスを使用し、エラーコードを定義する
 - グローバル例外フィルタで HTTP レスポンスを統一する

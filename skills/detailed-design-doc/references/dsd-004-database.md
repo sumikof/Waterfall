@@ -20,6 +20,14 @@
 |---|---|---|---|
 | `{table_name}` | {論理名} | 新規作成 / 既存変更 / 参照のみ | {概要} |
 
+### 1.5 集約-テーブルマッピング
+
+> DSD-009_{FEAT-ID}（ドメインモデル詳細設計書）で定義された集約とテーブルの対応関係を定義する。
+
+| 集約名 | 集約ルート | ルートテーブル | 子テーブル | 値オブジェクト列 |
+|---|---|---|---|---|
+| {AggregateName} | {RootEntity} | `{root_table}` | `{child_table1}`, `{child_table2}` | `{vo_column1}`, `{vo_column2}` |
+
 ---
 
 ## 2. テーブル詳細定義
@@ -55,6 +63,12 @@
 | `{table}_user_id_fkey` | FOREIGN KEY | `user_id` | `users(id)` | ユーザー参照 |
 | `{table}_name_unique` | UNIQUE | `name`, `user_id` | - | ユーザー内で名称重複不可 |
 | `{table}_amount_check` | CHECK | `amount` | - | `amount >= 1` |
+
+**値オブジェクトマッピング:**
+
+| 値オブジェクト名 | マッピング方式 | マッピング先カラム/テーブル | 説明 |
+|---|---|---|---|
+| {VOName} | 埋め込み / 分離テーブル | `{column}` / `{table}` | {マッピングの詳細} |
 
 （テーブル数分繰り返す）
 
@@ -131,6 +145,44 @@ CREATE TRIGGER update_{table}_updated_at
 | テーブル作成 | `DROP TABLE IF EXISTS {table_name};` |
 | カラム追加 | `ALTER TABLE {table_name} DROP COLUMN IF EXISTS {column};` |
 | インデックス追加 | `DROP INDEX IF EXISTS {index_name};` |
+
+### 4.5 データライフサイクル設計
+
+> BSD-010（データアーキテクチャ設計書）のデータ保持ポリシーに基づき、テーブルごとの保持期間・アーカイブ・削除ルールを定義する。
+
+| テーブル名 | OLTP保持期間 | アーカイブ方式 | アーカイブ先 | 完全削除タイミング |
+|---|---|---|---|---|
+| `{table_name}` | {期間} | {パーティション / 別テーブル移行 / なし} | {アーカイブ先} | {タイミング} |
+
+### 4.6 分析・読み取りモデル設計
+
+> CQRS 適用時の読み取りモデル・分析用マテリアライズドビュー・非正規化テーブルを定義する。
+
+| ビュー/テーブル名 | 種別 | 元テーブル | 更新方式 | 用途 |
+|---|---|---|---|---|
+| `mv_{name}` | マテリアライズドビュー | {元テーブル} | {トリガー / バッチ / CDC} | {用途} |
+| `read_{name}` | 非正規化テーブル | {元テーブル} | {イベント駆動 / バッチ} | {用途} |
+
+**クエリ最適化インデックス:**
+
+| インデックス名 | 対象 | カラム | 種別 | 用途 |
+|---|---|---|---|---|
+| `idx_read_{name}` | `read_{name}` | {カラム} | {B-tree / GIN} | {クエリパターン} |
+
+### 4.7 イベントストアテーブル（該当時のみ）
+
+> イベントソーシング採用時に定義する。不採用の場合は「該当なし - イベントソーシング不採用」と記載する。
+
+| カラム名 | 型 | 制約 | 説明 |
+|---|---|---|---|
+| `event_id` | UUID | PK | イベント一意ID |
+| `aggregate_id` | UUID | NOT NULL, INDEX | 集約ID |
+| `aggregate_type` | VARCHAR(100) | NOT NULL | 集約タイプ |
+| `event_type` | VARCHAR(100) | NOT NULL | イベントタイプ |
+| `payload` | JSONB | NOT NULL | イベントペイロード |
+| `metadata` | JSONB | NULL | メタデータ（操作者・リクエストID等） |
+| `version` | INTEGER | NOT NULL | 集約バージョン（楽観的ロック） |
+| `created_at` | TIMESTAMPTZ | NOT NULL, DEFAULT NOW() | イベント発生日時 |
 
 ---
 

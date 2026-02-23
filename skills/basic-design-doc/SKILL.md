@@ -18,6 +18,8 @@ description: |
 | BSD-006 | データベース基本設計書 | REQ-005, REQ-007 | `docs/BSD/BSD-006_database-design.md` |
 | BSD-007 | 外部インターフェース基本設計書 | REQ-007 | `docs/BSD/BSD-007_external-interface-design.md` |
 | BSD-008 | テスト計画書（基本） | REQ-006 | `projects/PRJ-{NNN}_{名称}/BSD/BSD-008_test-plan.md` |
+| BSD-009 | ドメインモデル設計書（DDD 戦略設計） | REQ-002, REQ-003, REQ-005, REQ-008 | `docs/BSD/BSD-009_domain-model.md` |
+| BSD-010 | データアーキテクチャ設計書 | REQ-005, REQ-006, REQ-007, BSD-006, BSD-009 | `docs/BSD/BSD-010_data-architecture.md` |
 
 ## REQドキュメントのパス
 
@@ -36,7 +38,11 @@ description: |
 
 ### Step 1: 対象ドキュメントの特定
 
-ユーザーのリクエストから作成対象のBSDドキュメントを特定する。複数指定・「全て」の場合は優先度順（BSD-001→BSD-002→...）に処理する。
+ユーザーのリクエストから作成対象のBSDドキュメントを特定する。複数指定・「全て」の場合は以下の生成順序で処理する。
+
+**生成順序**: `BSD-001 → BSD-002 → BSD-003 → BSD-004 → BSD-009 → BSD-005 → BSD-006 → BSD-010 → BSD-007 → BSD-008`
+
+> BSD-009 は BSD-004 の業務フロー情報が必要。BSD-010 は BSD-006 のテーブル構造と BSD-009 のコンテキスト定義が必要。
 
 ### Step 2: 入力REQドキュメントの読み込み
 
@@ -58,6 +64,8 @@ description: |
 | BSD-006 | `references/bsd-006-database-design.md` |
 | BSD-007 | `references/bsd-007-external-interface.md` |
 | BSD-008 | `references/bsd-008-test-plan.md` |
+| BSD-009 | `references/bsd-009-domain-model.md` |
+| BSD-010 | `references/bsd-010-data-architecture.md` |
 
 ### Step 4: ドキュメント生成
 
