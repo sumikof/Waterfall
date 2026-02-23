@@ -20,14 +20,39 @@ Web システム向けのウォーターフォール + スペック駆動開発�
 
 ## フェーズ実行方法
 
-各フェーズを実行するときは、Task サブエージェントを起動し、対応するスキルの `SKILL.md` を読み込ませて作業させる。
+各フェーズを実行するときは、`agents/` 配下のプロンプトファイルを読み込み、パラメータを置換して Task サブエージェントを起動する。
+
+### サブエージェントプロンプト一覧
+
+| フェーズ | プロンプトファイル | パラメータ |
+|---|---|---|
+| REQ | `agents/requirements-definition.md` | `{{PROJECT_ID}}`, `{{PROJECT_NAME}}` |
+| BSD | `agents/basic-design-doc.md` | `{{PROJECT_ID}}`, `{{PROJECT_NAME}}` |
+| DSD | `agents/detailed-design-doc.md` | `{{PROJECT_ID}}`, `{{PROJECT_NAME}}`, `{{FEAT_ID}}`, `{{FEAT_NAME}}` |
+| IMP | `agents/implementation.md` | `{{PROJECT_ID}}`, `{{PROJECT_NAME}}`, `{{FEAT_ID}}`, `{{FEAT_NAME}}` |
+| IT | `agents/integration-test.md` | `{{PROJECT_ID}}`, `{{PROJECT_NAME}}`, `{{FEAT_ID}}`, `{{FEAT_NAME}}` |
+| ST | `agents/system-test.md` | `{{PROJECT_ID}}`, `{{PROJECT_NAME}}` |
+| UAT | `agents/acceptance-test.md` | `{{PROJECT_ID}}`, `{{PROJECT_NAME}}` |
+
+### 起動手順
+
+1. `agents/{フェーズ名}.md` を Read で読み込む
+2. パラメータ（`{{PROJECT_ID}}` 等）を実際の値に置換してプロンプトとする
+3. Task サブエージェント（`subagent_type: "general-purpose"`）を起動し、置換済みプロンプトを渡す
+4. サブエージェントは SKILL.md・テンプレート・入力ドキュメントを自律的に読み込んで作業する
 
 ```
-Task サブエージェント起動パターン:
-1. skills/{スキル名}/SKILL.md を Read で読み込む
-2. SKILL.md の指示に従い、入力ドキュメントを読み込む
-3. SKILL.md のワークフローに沿って成果物を作成する
-4. references/ 配下のテンプレート・ガイドを参照する
+起動例（BSD フェーズ）:
+  1. agents/basic-design-doc.md を Read で読み込む
+  2. {{PROJECT_ID}} → PRJ-001, {{PROJECT_NAME}} → initial-build に置換する
+  3. Task サブエージェントを起動し、置換済みプロンプトを渡す
+
+起動例（DSD フェーズ・FEAT 単位）:
+  1. agents/detailed-design-doc.md を Read で読み込む
+  2. {{PROJECT_ID}} → PRJ-001, {{PROJECT_NAME}} → initial-build,
+     {{FEAT_ID}} → FEAT-001, {{FEAT_NAME}} → user-auth に置換する
+  3. Task サブエージェントを起動し、置換済みプロンプトを渡す
+  ※ 複数 FEAT は別々のサブエージェントで並行して進められる
 ```
 
 ## 変更管理ルール（最重要）
@@ -67,5 +92,6 @@ Task サブエージェント起動パターン:
 ## 参照ドキュメント
 
 - ドキュメント一覧（正本）: `document-list.md`
+- サブエージェントプロンプト: `agents/{フェーズ名}.md`
 - 各スキルの詳細: `skills/{スキル名}/SKILL.md`
 - テンプレート・ガイド: `skills/{スキル名}/references/`
