@@ -11,7 +11,7 @@ Web システム向けのウォーターフォール + スペック駆動開発�
 | 1 | **REQ** 要件定義 | `skills/requirements-definition/` | REQ-001〜REQ-008 |
 | 2 | **BSD** 基本設計 | `skills/basic-design-doc/` | BSD-001〜BSD-010 |
 | 3 | **DSD** 詳細設計 | `skills/detailed-design-doc/` | DSD-001〜DSD-009（FEAT 単位） |
-| 4 | **IMP** 実装（TDD） | `skills/implementation/` | IMP-001〜IMP-005 + ソースコード |
+| 4 | **IMP** 実装（TDD） | `skills/implementation/` + `skills/unit-test/` | IMP-001〜IMP-005 + ソースコード |
 | 5 | **IT** 結合テスト | `skills/integration-test/` | IT-001〜IT-003 |
 | 6 | **ST** システムテスト | `skills/system-test/` | ST-001〜ST-004 |
 | 7 | **UAT** 受入テスト | `skills/acceptance-test/` | UAT-001〜UAT-003 |
@@ -86,6 +86,8 @@ Web システム向けのウォーターフォール + スペック駆動開発�
 
 ### TDD 統合方針
 - DSD-008（単体テスト設計書）を起点に Red→Green→Refactor サイクルで実装する
+- TDD の方法論（テストの書き方・テストダブル・FIRST 原則）は単体テストスキル（`skills/unit-test/`）を参照する
+- 実装エージェントは実装スキルと単体テストスキルの両方を読み込んで作業する
 - テストコードと結果は IMP-001/IMP-002 に含める
 - UT フォルダ・UT フェーズは使用しない
 

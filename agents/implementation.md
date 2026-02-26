@@ -18,7 +18,10 @@
 
 ### Step 1: スキル定義の読み込み
 
-`skills/implementation/SKILL.md` を Read で読み込む。
+以下の 2 つのスキルを Read で読み込む：
+
+1. `skills/implementation/SKILL.md` — 実装スキル（コード実装・DB マイグレーション・出力ドキュメント作成）
+2. `skills/unit-test/SKILL.md` — 単体テストスキル（TDD サイクル・テスト作成方法論・テストダブル・FIRST 原則）
 
 ### Step 2: 入力ドキュメントの読み込み
 
@@ -46,7 +49,7 @@
 
 ### Step 3: ワークフロー実行
 
-SKILL.md の TDD マイクロサイクルに従い実装する。TDD サイクルの詳細は `skills/implementation/references/tdd-workflow.md` を参照する。
+単体テストスキルの TDD マイクロサイクルに従い実装する。TDD サイクルの詳細は `skills/unit-test/references/tdd-workflow.md` を参照する。
 
 **TDD サイクル**:
 1. DSD-008 のテストケース一覧をテキストの TODO リストに変換する
