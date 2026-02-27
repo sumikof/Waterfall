@@ -1,4 +1,4 @@
-# UAT（受入テスト）サブエージェント
+# UAT（受入テスト）オーケストレーターエージェント
 
 ## パラメータ
 
@@ -11,7 +11,13 @@
 
 **プロジェクト全体で 1 回実施する。** ST-001 が PASS した状態で起動する。
 
-テスト実施順序: UAT-001 → UAT-002（随時更新）→ UAT-003（リリース可否判断）。
+このエージェントは**オーケストレーター**として、以下のサブエージェントを起動・統合する：
+
+| サブエージェント | タイプ | プロンプト | 役割 |
+|---|---|---|---|
+| コード探索 | Explore | `agents/uat-code-explorer.md` | FEAT 別にソースコードのファイルパスを特定する |
+| シナリオテスト実行 | general-purpose | `agents/uat-scenario-runner.md` | FEAT 別にソースコードを追跡しユーザー操作を検証する |
+| ブラウザテスト実行 | general-purpose | `agents/uat-browser-runner.md` | Playwright でブラウザ上の動作を検証する（**未実装**） |
 
 ## 実行手順
 
@@ -19,7 +25,7 @@
 
 `skills/acceptance-test/SKILL.md` を Read で読み込む。
 
-### Step 2: 入力ドキュメントの読み込み
+### Step 2: 入力ドキュメントの読み込みとペルソナ構築
 
 **最初に読む（スコープ把握・受入基準確認）**:
 
@@ -28,8 +34,9 @@
 | BSD-008 テスト計画 | `projects/{{PROJECT_ID}}_{{PROJECT_NAME}}/BSD/BSD-008_test-plan.md` |
 | ST-001 システムテスト結果 | `projects/{{PROJECT_ID}}_{{PROJECT_NAME}}/ST/ST-001_system-test.md` |
 | ST-004 不具合管理票 | `projects/{{PROJECT_ID}}_{{PROJECT_NAME}}/ST/ST-004_defect-list.md` |
+| REQ-005 機能一覧 | `docs/REQ/REQ-005_feature-list.md` |
 
-**UAT-001（受入テスト仕様書）設計時に参照する**:
+**ペルソナ構築・シナリオ設計時に参照する**:
 
 | ドキュメント | パス |
 |---|---|
@@ -39,15 +46,59 @@
 
 > ST-001 の「UAT フェーズへの申し送り事項」と REQ-002 の業務ルールを必ず確認してからシナリオ設計を開始する。
 
-### Step 3: ワークフロー実行
+SKILL.md の「ユーザーペルソナの採用」セクションに従い、REQ-002・REQ-003 からペルソナを構築する。
 
-SKILL.md のワークフローに従い、UAT-001 → UAT-002 → UAT-003 の順に作業する。テンプレートは `skills/acceptance-test/references/uat-templates.md` を参照する。
+### Step 3: 受入シナリオを設計する（オーケストレーター自身が実施）
 
-**UAT-001**: 受入シナリオ設計（UTC-{NNN}）→ テスト仕様設計 → テスト実施 → 完了判定
-**UAT-002**: 不具合管理（BUG-{NNN}、ST-004 の通番から継続）
-**UAT-003**: テスト結果サマリー → 不具合サマリー → リリース可否判断（PASS / CONDITIONAL PASS / FAIL）
+SKILL.md のワークフローに従い、UTC テストケースを設計する。
 
-### Step 4: 成果物の保存
+1. REQ-003 のユースケースを元に、業務シナリオテスト・業務ルール確認テスト・ST 保留不具合再確認のテストケースを作成する
+2. テストケース ID は `UTC-{NNN}` 形式で連番採番する
+3. **各 UTC を FEAT-ID に割り当てる**（どの FEAT の検証に使うか）
+
+### Step 4: コード探索サブエージェントを起動する（FEAT 並行）
+
+`agents/uat-code-explorer.md` を Read で読み込み、パラメータを置換して **Explore タイプ** の Task サブエージェントを FEAT ごとに起動する。複数 FEAT は**並行で起動**してよい。
+
+```
+起動パラメータ:
+  subagent_type: "Explore"
+  FEAT_ID: 対象 FEAT-ID
+  FEAT_NAME: 対象 FEAT-NAME
+```
+
+各サブエージェントの返却結果（FE・BE ファイルパス一覧）を記録する。
+
+### Step 5: シナリオテスト実行サブエージェントを起動する（FEAT 並行）
+
+`agents/uat-scenario-runner.md` を Read で読み込み、パラメータを置換して **general-purpose タイプ** の Task サブエージェントを FEAT ごとに起動する。複数 FEAT は**並行で起動**してよい。
+
+```
+起動パラメータ:
+  subagent_type: "general-purpose"
+  PROJECT_ID: {{PROJECT_ID}}
+  PROJECT_NAME: {{PROJECT_NAME}}
+  FEAT_ID: 対象 FEAT-ID
+  FEAT_NAME: 対象 FEAT-NAME
+  BUG_ID_START: ST-004 の最終 BUG-ID + 1 から、FEAT ごとに 50 ずつ割り当てる
+  PERSONA: Step 2 で構築したペルソナ定義テキスト
+  UTC_LIST: Step 3 で当該 FEAT に割り当てた UTC テストケース一覧
+  SOURCE_FILES: Step 4 のコード探索結果
+```
+
+> **BUG-ID 衝突防止**: FEAT-001 は BUG-{N+1}〜BUG-{N+50}、FEAT-002 は BUG-{N+51}〜BUG-{N+100} のように 50 件分の範囲を事前割り当てする。
+
+### Step 6: 結果を集約する
+
+全サブエージェントの結果が返ったら：
+
+1. 全 FEAT の UTC 結果を統合する
+2. 全 FEAT の不具合（BUG-ID）を統合する
+3. BUG-ID を実際に使用された番号だけに再採番する（歯抜けを詰める）
+
+### Step 7: 成果物を作成する
+
+テンプレートは `skills/acceptance-test/references/uat-templates.md` を参照する。
 
 | ドキュメント | 保存先 |
 |---|---|
@@ -57,7 +108,11 @@ SKILL.md のワークフローに従い、UAT-001 → UAT-002 → UAT-003 の順
 
 保存先ディレクトリが存在しない場合は `mkdir -p` で作成してから保存する。
 
-### Step 5: 完了報告
+**UAT-001**: サブエージェントの UTC 結果を統合し、テスト結果サマリーと合否判定を記載する
+**UAT-002**: 全 FEAT の不具合を統合し、重大度別の統計サマリーを作成する
+**UAT-003**: テスト結果サマリー → 不具合サマリー → リリース可否判断（PASS / CONDITIONAL PASS / FAIL）
+
+### Step 8: 完了報告
 
 以下を報告する:
 - 作成したドキュメント一覧（ファイルパス付き）
