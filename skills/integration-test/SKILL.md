@@ -26,6 +26,29 @@ description: |
 - IT ドキュメントテンプレート → `references/it-templates.md`
 - 配置ルール・ドキュメント定義 → `references/document-list.md`
 
+## パラメータ
+
+| パラメータ | 説明 | 例 |
+|---|---|---|
+| PROJECT_ID | プロジェクトID | PRJ-001 |
+| PROJECT_NAME | プロジェクト名 | initial-build |
+| FEAT_ID | 機能ID（IT-002 横断モード時は空欄） | FEAT-001 |
+| FEAT_NAME | 機能名（IT-002 横断モード時は空欄） | user-auth |
+
+## エージェント起動
+
+このスキルは以下のサブエージェントを使用して作業を実行する。FEAT 単位モード（IT-001）と横断モード（IT-002）の 2 つの起動モードがある。
+
+| サブエージェント | タイプ | プロンプト |
+|---|---|---|
+| IT 実行エージェント | general-purpose | `agents/integration-test.md` |
+
+### 起動手順
+
+1. `agents/integration-test.md` を Read で読み込む
+2. `{{PROJECT_ID}}`, `{{PROJECT_NAME}}`, `{{FEAT_ID}}`, `{{FEAT_NAME}}` を実際の値に置換する（横断モード時は FEAT_ID/FEAT_NAME を空欄にする）
+3. Task サブエージェント（`subagent_type: "general-purpose"`）を起動し、置換済みプロンプトを渡す
+
 ## 並行作業スコープ
 
 **IT-001 は 1回の起動で 1つの FEAT-ID を担当する。**

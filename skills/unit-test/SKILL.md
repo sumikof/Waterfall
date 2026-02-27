@@ -28,6 +28,10 @@ DSD-008（単体テスト設計書）を起点に、TDD の Red→Green→Refact
 - テスト結果テンプレート断片・TDD 不具合管理票テンプレート → `references/ut-templates.md`
 - 配置ルール・ドキュメント定義 → `references/document-list.md`
 
+## エージェント起動
+
+このスキルは独立したフェーズを持たない**補助スキル**である。実装スキル（`skills/implementation/SKILL.md`）のエージェント起動手順で IMP 実行エージェントが本スキルを読み込んで使用する。単独でサブエージェントを起動することはない。
+
 ## 並行作業スコープ
 
 **このスキルは 1回の起動で 1つの FEAT-ID を担当する。**

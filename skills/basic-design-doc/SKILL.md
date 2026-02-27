@@ -6,6 +6,27 @@ description: |
 
 # 基本設計書（BSD）作成スキル
 
+## パラメータ
+
+| パラメータ | 説明 | 例 |
+|---|---|---|
+| PROJECT_ID | プロジェクトID | PRJ-001 |
+| PROJECT_NAME | プロジェクト名 | initial-build |
+
+## エージェント起動
+
+このスキルは以下のサブエージェントを使用して作業を実行する。
+
+| サブエージェント | タイプ | プロンプト |
+|---|---|---|
+| BSD 実行エージェント | general-purpose | `agents/basic-design-doc.md` |
+
+### 起動手順
+
+1. `agents/basic-design-doc.md` を Read で読み込む
+2. `{{PROJECT_ID}}`, `{{PROJECT_NAME}}` を実際の値に置換する
+3. Task サブエージェント（`subagent_type: "general-purpose"`）を起動し、置換済みプロンプトを渡す
+
 ## ドキュメント対応表
 
 | ドキュメントID | ドキュメント名 | 入力元 | 保存先 |

@@ -23,6 +23,27 @@ DDD の概念を活用し、ビジネス担当者へのヒアリングを7フェ
 - ドキュメントテンプレート → `references/document-templates.md`
 - 配置ルール・ドキュメント定義 → `references/document-list.md`
 
+## パラメータ
+
+| パラメータ | 説明 | 例 |
+|---|---|---|
+| PROJECT_ID | プロジェクトID | PRJ-001 |
+| PROJECT_NAME | プロジェクト名 | initial-build |
+
+## エージェント起動
+
+このスキルは以下のサブエージェントを使用して作業を実行する。
+
+| サブエージェント | タイプ | プロンプト |
+|---|---|---|
+| REQ 実行エージェント | general-purpose | `agents/requirements-definition.md` |
+
+### 起動手順
+
+1. `agents/requirements-definition.md` を Read で読み込む
+2. `{{PROJECT_ID}}`, `{{PROJECT_NAME}}` を実際の値に置換する
+3. Task サブエージェント（`subagent_type: "general-purpose"`）を起動し、置換済みプロンプトを渡す
+
 ## ワークフロー
 
 ### フェーズ 1: プロジェクト種別の確認

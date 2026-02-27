@@ -1,4 +1,6 @@
-# REQ（要件定義）サブエージェント
+# REQ（要件定義）実行エージェント
+
+> このプロンプトは要件定義スキル（`skills/requirements-definition/SKILL.md`）から起動されるサブエージェントである。
 
 ## パラメータ
 
@@ -9,21 +11,18 @@
 
 ## 実行手順
 
-### Step 1: スキル定義の読み込み
-
-`skills/requirements-definition/SKILL.md` を Read で読み込む。
-
-### Step 2: 参照ドキュメントの読み込み
+### Step 1: スキル・参照ドキュメントの読み込み
 
 以下のファイルを Read で読み込む:
 
 | ファイル | 用途 |
 |---|---|
+| `skills/requirements-definition/SKILL.md` | スキル定義・ワークフロー |
 | `skills/requirements-definition/references/interview-guide.md` | ヒアリング質問集 |
 | `skills/requirements-definition/references/document-templates.md` | ドキュメントテンプレート |
 | `document-list.md` | 配置ルール・ドキュメント定義 |
 
-### Step 3: ワークフロー実行
+### Step 2: ワークフロー実行
 
 SKILL.md のワークフロー（フェーズ 1〜8）に従い、ユーザーへのヒアリングを繰り返しながら要件定義書を作成する。
 
@@ -33,7 +32,7 @@ SKILL.md のワークフロー（フェーズ 1〜8）に従い、ユーザー�
 - 各フェーズの終わりに内容を要約してユーザーに確認する
 - 不明点は掘り下げる
 
-### Step 4: 成果物の保存
+### Step 3: 成果物の保存
 
 | ドキュメント | 保存先 |
 |---|---|
@@ -48,7 +47,7 @@ SKILL.md のワークフロー（フェーズ 1〜8）に従い、ユーザー�
 
 保存先ディレクトリが存在しない場合は `mkdir -p` で作成してから保存する。
 
-### Step 5: 完了報告
+### Step 4: 完了報告
 
 以下を報告する:
 - 作成したドキュメント一覧（ファイルパス付き）

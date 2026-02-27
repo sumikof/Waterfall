@@ -28,6 +28,31 @@ description: |
 - 配置ルール・ドキュメント定義 → `references/document-list.md`
 - TDD サイクル詳細 → `skills/unit-test/references/tdd-workflow.md`（単体テストスキル側）
 
+## パラメータ
+
+| パラメータ | 説明 | 例 |
+|---|---|---|
+| PROJECT_ID | プロジェクトID | PRJ-001 |
+| PROJECT_NAME | プロジェクト名 | initial-build |
+| FEAT_ID | 機能ID | FEAT-001 |
+| FEAT_NAME | 機能名（英語・ケバブケース） | user-auth |
+
+## エージェント起動
+
+このスキルは以下のサブエージェントを使用して作業を実行する。1 回の起動で 1 つの FEAT-ID を担当する。複数 FEAT は別々のサブエージェントで並行して進められる。
+
+サブエージェントは本スキルと単体テストスキル（`skills/unit-test/SKILL.md`）の両方を読み込んで作業する。
+
+| サブエージェント | タイプ | プロンプト |
+|---|---|---|
+| IMP 実行エージェント | general-purpose | `agents/implementation.md` |
+
+### 起動手順
+
+1. `agents/implementation.md` を Read で読み込む
+2. `{{PROJECT_ID}}`, `{{PROJECT_NAME}}`, `{{FEAT_ID}}`, `{{FEAT_NAME}}` を実際の値に置換する
+3. Task サブエージェント（`subagent_type: "general-purpose"`）を起動し、置換済みプロンプトを渡す
+
 ## 並行作業スコープ
 
 **このスキルは 1回の起動で 1つの FEAT-ID を担当する。**

@@ -27,6 +27,27 @@ description: |
 - UAT ドキュメントテンプレート → `references/uat-templates.md`
 - 配置ルール・ドキュメント定義 → `references/document-list.md`
 
+## パラメータ
+
+| パラメータ | 説明 | 例 |
+|---|---|---|
+| PROJECT_ID | プロジェクトID | PRJ-001 |
+| PROJECT_NAME | プロジェクト名 | initial-build |
+
+## エージェント起動
+
+このスキルは以下のオーケストレーターエージェントを使用して作業を実行する。オーケストレーターは内部でさらにサブエージェント（コード探索・シナリオテスト実行）を起動する。
+
+| サブエージェント | タイプ | プロンプト |
+|---|---|---|
+| UAT オーケストレーター | general-purpose | `agents/acceptance-test.md` |
+
+### 起動手順
+
+1. `agents/acceptance-test.md` を Read で読み込む
+2. `{{PROJECT_ID}}`, `{{PROJECT_NAME}}` を実際の値に置換する
+3. Task サブエージェント（`subagent_type: "general-purpose"`）を起動し、置換済みプロンプトを渡す
+
 ## サブエージェント構成
 
 ```

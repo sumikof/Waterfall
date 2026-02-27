@@ -6,6 +6,29 @@ description: |
 
 # 詳細設計書（DSD）作成スキル
 
+## パラメータ
+
+| パラメータ | 説明 | 例 |
+|---|---|---|
+| PROJECT_ID | プロジェクトID | PRJ-001 |
+| PROJECT_NAME | プロジェクト名 | initial-build |
+| FEAT_ID | 機能ID | FEAT-001 |
+| FEAT_NAME | 機能名（英語・ケバブケース） | user-auth |
+
+## エージェント起動
+
+このスキルは以下のサブエージェントを使用して作業を実行する。1 回の起動で 1 つの FEAT-ID を担当する。複数 FEAT は別々のサブエージェントで並行して進められる。
+
+| サブエージェント | タイプ | プロンプト |
+|---|---|---|
+| DSD 実行エージェント | general-purpose | `agents/detailed-design-doc.md` |
+
+### 起動手順
+
+1. `agents/detailed-design-doc.md` を Read で読み込む
+2. `{{PROJECT_ID}}`, `{{PROJECT_NAME}}`, `{{FEAT_ID}}`, `{{FEAT_NAME}}` を実際の値に置換する
+3. Task サブエージェント（`subagent_type: "general-purpose"`）を起動し、置換済みプロンプトを渡す
+
 ## ドキュメント対応表
 
 | ドキュメントID | ドキュメント名 | 作成単位 | 入力元 | 保存先 |
