@@ -47,7 +47,27 @@ description: |
 
 1. `agents/integration-test.md` を Read で読み込む
 2. `{{PROJECT_ID}}`, `{{PROJECT_NAME}}`, `{{FEAT_ID}}`, `{{FEAT_NAME}}` を実際の値に置換する（横断モード時は FEAT_ID/FEAT_NAME を空欄にする）
-3. Task サブエージェント（`subagent_type: "general-purpose"`）を起動し、置換済みプロンプトを渡す
+3. 以下の形式で Task ツールを呼び出してサブエージェントを起動する
+
+> **重要**: このスキルの作業はすべてサブエージェントに委譲する。マスターエージェントが直接実行してはならない。
+
+Task ツール呼び出し（FEAT 単位モード）:
+- `subagent_type`: `"general-purpose"`
+- `description`: `"IT 結合テスト {FEAT_ID} 実行"`（例: `"IT 結合テスト FEAT-001 実行"`）
+- `prompt`: 置換済みの agents/integration-test.md の内容全文
+
+Task ツール呼び出し（横断モード・IT-002）:
+- `subagent_type`: `"general-purpose"`
+- `description`: `"IT API横断テスト実行"`
+- `prompt`: 置換済みの agents/integration-test.md の内容全文（FEAT_ID/FEAT_NAME を空欄にした版）
+
+### 複数 FEAT の並行起動
+
+複数 FEAT を処理する場合、FEAT ごとに独立した Task ツールを**同一メッセージ内で並行に**呼び出す。
+
+例（FEAT-001 と FEAT-002 を並行実行）:
+- Task 1: `subagent_type: "general-purpose"`, `description: "IT 結合テスト FEAT-001 実行"`, `prompt: （FEAT-001 用に置換した agents/integration-test.md）`
+- Task 2: `subagent_type: "general-purpose"`, `description: "IT 結合テスト FEAT-002 実行"`, `prompt: （FEAT-002 用に置換した agents/integration-test.md）`
 
 ## 並行作業スコープ
 

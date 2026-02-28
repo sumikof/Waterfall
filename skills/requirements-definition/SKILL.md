@@ -42,7 +42,14 @@ DDD の概念を活用し、ビジネス担当者へのヒアリングを7フェ
 
 1. `agents/requirements-definition.md` を Read で読み込む
 2. `{{PROJECT_ID}}`, `{{PROJECT_NAME}}` を実際の値に置換する
-3. Task サブエージェント（`subagent_type: "general-purpose"`）を起動し、置換済みプロンプトを渡す
+3. 以下の形式で Task ツールを呼び出してサブエージェントを起動する
+
+> **重要**: このスキルの作業はすべてサブエージェントに委譲する。マスターエージェントが直接実行してはならない。
+
+Task ツール呼び出し:
+- `subagent_type`: `"general-purpose"`
+- `description`: `"REQ 要件定義実行"`
+- `prompt`: 置換済みの agents/requirements-definition.md の内容全文
 
 ## ワークフロー
 

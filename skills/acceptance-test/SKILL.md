@@ -46,7 +46,14 @@ description: |
 
 1. `agents/acceptance-test.md` を Read で読み込む
 2. `{{PROJECT_ID}}`, `{{PROJECT_NAME}}` を実際の値に置換する
-3. Task サブエージェント（`subagent_type: "general-purpose"`）を起動し、置換済みプロンプトを渡す
+3. 以下の形式で Task ツールを呼び出してサブエージェントを起動する
+
+> **重要**: このスキルの作業はすべてサブエージェントに委譲する。マスターエージェントが直接実行してはならない。
+
+Task ツール呼び出し:
+- `subagent_type`: `"general-purpose"`
+- `description`: `"UAT 受入テスト実行"`
+- `prompt`: 置換済みの agents/acceptance-test.md の内容全文
 
 ## サブエージェント構成
 
