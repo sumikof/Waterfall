@@ -54,6 +54,7 @@ Task ツール呼び出し:
 - `subagent_type`: `"general-purpose"`
 - `description`: `"UAT 受入テスト実行"`
 - `prompt`: 置換済みの agents/acceptance-test.md の内容全文
+- `context`: `"fork"`
 
 ## サブエージェント構成
 

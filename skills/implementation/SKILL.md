@@ -59,14 +59,15 @@ Task ツール呼び出し:
 - `subagent_type`: `"general-purpose"`
 - `description`: `"IMP 実装 {FEAT_ID} 実行"`（例: `"IMP 実装 FEAT-001 実行"`）
 - `prompt`: 置換済みの agents/implementation.md の内容全文
+- `context`: `"fork"`
 
 ### 複数 FEAT の並行起動
 
 複数 FEAT を処理する場合、FEAT ごとに独立した Task ツールを**同一メッセージ内で並行に**呼び出す。
 
 例（FEAT-001 と FEAT-002 を並行実行）:
-- Task 1: `subagent_type: "general-purpose"`, `description: "IMP 実装 FEAT-001 実行"`, `prompt: （FEAT-001 用に置換した agents/implementation.md）`
-- Task 2: `subagent_type: "general-purpose"`, `description: "IMP 実装 FEAT-002 実行"`, `prompt: （FEAT-002 用に置換した agents/implementation.md）`
+- Task 1: `subagent_type: "general-purpose"`, `description: "IMP 実装 FEAT-001 実行"`, `prompt: （FEAT-001 用に置換した agents/implementation.md）`, `context: "fork"`
+- Task 2: `subagent_type: "general-purpose"`, `description: "IMP 実装 FEAT-002 実行"`, `prompt: （FEAT-002 用に置換した agents/implementation.md）`, `context: "fork"`
 
 ## 並行作業スコープ
 
