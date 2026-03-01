@@ -136,6 +136,12 @@ REQ-002（業務要件）・REQ-003（ユースケース）・REQ-005（機能�
 
 `agents/uat-code-explorer.md` を Read で読み込み、FEAT ごとに Explore サブエージェントを起動する。
 
+Task ツール呼び出し（FEAT ごとに並行）:
+- `subagent_type`: `"Explore"`
+- `description`: `"UAT コード探索 {FEAT_ID}"`（例: `"UAT コード探索 FEAT-001"`）
+- `prompt`: 置換済みの agents/uat-code-explorer.md の内容全文（`{{FEAT_ID}}`, `{{FEAT_NAME}}` を置換）
+- `context`: `"fork"`
+
 ```
 複数 FEAT を並行で起動してよい。
 各サブエージェントは以下を返す:
@@ -146,6 +152,12 @@ REQ-002（業務要件）・REQ-003（ユースケース）・REQ-005（機能�
 ## シナリオテスト実行（Phase C: general-purpose サブエージェント）
 
 `agents/uat-scenario-runner.md` を Read で読み込み、FEAT ごとに general-purpose サブエージェントを起動する。
+
+Task ツール呼び出し（FEAT ごとに並行）:
+- `subagent_type`: `"general-purpose"`
+- `description`: `"UAT シナリオテスト {FEAT_ID}"`（例: `"UAT シナリオテスト FEAT-001"`）
+- `prompt`: 置換済みの agents/uat-scenario-runner.md の内容全文（`{{FEAT_ID}}`, `{{FEAT_NAME}}`, `{{PERSONA}}`, `{{UTC_LIST}}`, `{{SOURCE_FILES}}`, `{{BUG_ID_START}}` を置換）
+- `context`: `"fork"`
 
 ### サブエージェントに渡す情報
 
