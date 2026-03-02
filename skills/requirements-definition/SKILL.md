@@ -50,6 +50,7 @@ Task ツール呼び出し:
 - `subagent_type`: `"general-purpose"`
 - `description`: `"REQ 要件定義実行"`
 - `prompt`: 置換済みの agents/requirements-definition.md の内容全文
+- `context`: `"fork"`
 
 ## ワークフロー
 

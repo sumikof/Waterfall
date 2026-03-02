@@ -55,6 +55,7 @@ Task ツール呼び出し:
 - `subagent_type`: `"general-purpose"`
 - `description`: `"ST システムテスト実行"`
 - `prompt`: 置換済みの agents/system-test.md の内容全文
+- `context`: `"fork"`
 
 ## テスト実施順序
 

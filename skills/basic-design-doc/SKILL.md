@@ -33,6 +33,7 @@ Task ツール呼び出し:
 - `subagent_type`: `"general-purpose"`
 - `description`: `"BSD 基本設計実行"`
 - `prompt`: 置換済みの agents/basic-design-doc.md の内容全文
+- `context`: `"fork"`
 
 ## ドキュメント対応表
 
