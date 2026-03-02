@@ -1,3 +1,9 @@
+---
+name: requirements-definition
+description: REQ（要件定義）実行エージェント。要件定義スキルから起動されるサブエージェント。ユーザーへのヒアリングを繰り返しながら REQ-001〜REQ-008 のドキュメントを生成する。
+model: inherit
+---
+
 # REQ（要件定義）実行エージェント
 
 > このプロンプトは要件定義スキル（`skills/requirements-definition/SKILL.md`）から起動されるサブエージェントである。

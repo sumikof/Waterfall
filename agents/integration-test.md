@@ -1,3 +1,9 @@
+---
+name: integration-test
+description: IT（結合テスト）実行エージェント。結合テストスキルから起動されるサブエージェント。FEAT 単位モードと横断モードがあり IT-001〜IT-003 を作成する。
+model: inherit
+---
+
 # IT（結合テスト）実行エージェント
 
 > このプロンプトは結合テストスキル（`skills/integration-test/SKILL.md`）から起動されるサブエージェントである。

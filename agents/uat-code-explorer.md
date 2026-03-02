@@ -1,3 +1,9 @@
+---
+name: uat-code-explorer
+description: UAT コード探索サブエージェント。UAT オーケストレーターから Explore タイプで起動される。対象 FEAT に関連する FE・BE ソースコードのファイルパスを網羅的に特定して返す。
+model: inherit
+---
+
 # UAT コード探索サブエージェント
 
 > このプロンプトは UAT オーケストレーターから Explore タイプの Task サブエージェントとして起動される。

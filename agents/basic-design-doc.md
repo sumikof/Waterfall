@@ -1,3 +1,9 @@
+---
+name: basic-design-doc
+description: BSD（基本設計）実行エージェント。基本設計スキルから起動されるサブエージェント。REQ フェーズの成果物を読み込み BSD-001〜BSD-010 のドキュメントを生成する。
+model: inherit
+---
+
 # BSD（基本設計）実行エージェント
 
 > このプロンプトは基本設計スキル（`skills/basic-design-doc/SKILL.md`）から起動されるサブエージェントである。

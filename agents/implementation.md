@@ -1,3 +1,9 @@
+---
+name: implementation
+description: IMP（実装・TDD）実行エージェント。実装スキルから起動されるサブエージェント。1 つの FEAT-ID を担当し TDD サイクル（Red→Green→Refactor）でソースコードと IMP-001〜IMP-005 を作成する。
+model: inherit
+---
+
 # IMP（実装・TDD）実行エージェント
 
 > このプロンプトは実装スキル（`skills/implementation/SKILL.md`）から起動されるサブエージェントである。

@@ -1,3 +1,9 @@
+---
+name: uat-browser-runner
+description: UAT ブラウザテスト実行サブエージェント（未実装・開発計画）。UAT オーケストレーターから起動され Playwright を使用してブラウザ上のユーザー操作を再現し受入テストを実施する。
+model: inherit
+---
+
 # UAT ブラウザテスト実行サブエージェント
 
 > **ステータス: 未実装（開発計画）**

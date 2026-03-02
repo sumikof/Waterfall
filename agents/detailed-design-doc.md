@@ -1,3 +1,9 @@
+---
+name: detailed-design-doc
+description: DSD（詳細設計）実行エージェント。詳細設計スキルから起動されるサブエージェント。1 つの FEAT-ID を担当し DSD-001〜DSD-009 のドキュメントを機能別に生成する。
+model: inherit
+---
+
 # DSD（詳細設計）実行エージェント
 
 > このプロンプトは詳細設計スキル（`skills/detailed-design-doc/SKILL.md`）から起動されるサブエージェントである。
