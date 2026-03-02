@@ -16,6 +16,8 @@ description: |
   入力: BSD-008, REQ-003, REQ-005, REQ-006, BSD-002, IT-001_{FEAT-ID}（全FEAT-ID分）
   出力: projects/PRJ-{NNN}/ST/ 以下の ST-001〜ST-004
   配置ルール・ドキュメント定義 → references/document-list.md
+context: fork
+agent: agents/system-test.md
 ---
 
 # システムテストスキル（ST）

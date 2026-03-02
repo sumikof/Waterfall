@@ -2,6 +2,8 @@
 name: detailed-design-doc
 description: |
   ウォーターフォール開発の詳細設計（DSD）フェーズのドキュメントを作成するスキル。基本設計（BSD）・要件定義（REQ）フェーズのドキュメントを入力として読み込み、機能ID（FEAT-NNN）単位でDSD-001〜DSD-008の各詳細設計書を生成・保存する。以下の場合に使用する。(1)「詳細設計書を作成して」「DSD-XXX を書いて」と依頼された場合。(2) FEAT-NNN の詳細設計書を作成する場合。(3) バックエンド詳細設計・フロントエンド詳細設計・API詳細設計・DB詳細設計・外部IF詳細設計・バッチ処理詳細設計・コーディング規約・単体テスト設計のいずれかを依頼された場合。プロジェクトディレクトリは /home/ubuntu/workspace/Waterfall/ を想定。
+context: fork
+agent: agents/detailed-design-doc.md
 ---
 
 # 詳細設計書（DSD）作成スキル

@@ -15,6 +15,12 @@ description: |
   入力: docs/DSD/ 以下の DSD-008（単体テスト設計書）
   出力: テストコード・テスト結果（IMP-001/IMP-002 のテスト結果セクションに記載）
   配置ルール・ドキュメント定義 → references/document-list.md
+context: null
+agent: null
+note: |
+  このスキルは独立したサブエージェントを起動しない補助スキル。
+  implementation スキルの IMP 実行エージェント（agents/implementation.md）が
+  本スキルを直接読み込んで TDD サイクルを実施する。
 ---
 
 # 単体テストスキル（TDD）
