@@ -15,6 +15,8 @@ description: |
   入力: docs/DSD/ 以下の DSD-001〜DSD-008
   出力: projects/PRJ-{NNN}/IMP/ 以下の IMP-001〜IMP-005
   配置ルール・ドキュメント定義 → references/document-list.md
+context: fork
+agent: agents/implementation.md
 ---
 
 # 実装スキル

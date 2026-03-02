@@ -2,6 +2,8 @@
 name: basic-design-doc
 description: |
   ウォーターフォール開発の基本設計（BSD）フェーズのドキュメントを作成するスキル。要件定義（REQ）フェーズのドキュメントを入力として読み込み、BSD-001〜BSD-008 の各基本設計書を生成・保存する。以下の場合に使用する。(1)「基本設計書を作成して」「BSD-XXX を書いて」と依頼された場合。(2) REQドキュメントを元に設計書を作成する場合。(3) システムアーキテクチャ・セキュリティ・画面設計・業務フロー・API設計・DB設計・外部IF設計・テスト計画のいずれかの基本設計書作成を依頼された場合。プロジェクトディレクトリは /home/ubuntu/workspace/Waterfall/ を想定。
+context: fork
+agent: agents/basic-design-doc.md
 ---
 
 # 基本設計書（BSD）作成スキル

@@ -10,6 +10,8 @@ description: |
 
   成果物は REQ フェーズの Markdown ドキュメント群（REQ-001〜REQ-008）。
   ファイルの配置先・命名規則は references/document-list.md を参照。
+context: fork
+agent: agents/requirements-definition.md
 ---
 
 # 要件定義書作成スキル

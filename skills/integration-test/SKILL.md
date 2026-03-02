@@ -14,6 +14,8 @@ description: |
   入力: IMP-001_{FEAT-ID}, IMP-002_{FEAT-ID}, DSD-003_{FEAT-ID}, DSD-005_{FEAT-ID}（該当時）
   出力: projects/PRJ-{NNN}/IT/ 以下の IT-001〜IT-003
   配置ルール・ドキュメント定義 → references/document-list.md
+context: fork
+agent: agents/integration-test.md
 ---
 
 # 結合テストスキル（IT）

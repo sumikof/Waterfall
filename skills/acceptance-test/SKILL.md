@@ -15,6 +15,24 @@ description: |
   入力: REQ-001, REQ-002, REQ-003, REQ-005, ST-001, ST-004、実装済みソースコード
   出力: projects/PRJ-{NNN}/UAT/ 以下の UAT-001〜UAT-003
   配置ルール・ドキュメント定義 → references/document-list.md
+context: fork
+agents:
+  - name: acceptance-test
+    file: agents/acceptance-test.md
+    subagent_type: general-purpose
+    role: UAT オーケストレーター（メイン起動）
+  - name: uat-code-explorer
+    file: agents/uat-code-explorer.md
+    subagent_type: Explore
+    role: Phase B コード探索（FEAT 並行）
+  - name: uat-scenario-runner
+    file: agents/uat-scenario-runner.md
+    subagent_type: general-purpose
+    role: Phase C シナリオテスト実行（FEAT 並行）
+  - name: uat-browser-runner
+    file: agents/uat-browser-runner.md
+    subagent_type: general-purpose
+    role: Phase D ブラウザテスト実行（未実装）
 ---
 
 # 受入テストスキル（UAT）
