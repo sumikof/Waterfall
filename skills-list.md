@@ -10,3 +10,4 @@
 | system-test | `skills/system-test/` | システムテストフェーズ（ST） |
 | acceptance-test | `skills/acceptance-test/` | 受入テストフェーズ（UAT） |
 | unit-test | `skills/unit-test/` | TDD 方法論リファレンス |
+| artifact-review | `skills/artifact-review/` | フェーズ間成果物整合性レビュー（REV） |
